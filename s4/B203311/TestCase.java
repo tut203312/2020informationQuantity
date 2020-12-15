@@ -93,9 +93,9 @@ public class TestCase {
 		if(value != 0.0){System.out.println("value should be 0.0 when target not set. But it returns "+value); c++;}
 		myObject.setTarget("00".getBytes());
 		value = myObject.estimation();
-		if(value != Double.MAX_VALUE){System.out.println("value should be Double.MAX_VALUE when space not set. But it returns "+value); c++}
+		if(value != Double.MAX_VALUE){System.out.println("value should be Double.MAX_VALUE when space not set. But it returns "+value); c++;}
 		myObject.setSpace("00283940".getBytes());
-		if((value < 2.9999) || (value > 3.0001)){System.out.println("IQ for 00 in 00283940 should be 4.0. But it returns "+value); c++}
+		if((value < 2.9999) || (value > 3.0001)){System.out.println("IQ for 00 in 00283940 should be 4.0. But it returns "+value); c++;}
 	}
 	catch(Exception e) {
 	    System.out.println("Exception occurred in InformationEstimator Object");
