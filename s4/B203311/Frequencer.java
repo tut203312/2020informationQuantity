@@ -117,7 +117,6 @@ public class Frequencer implements FrequencerInterface{
         for(int i = 0; i< space.length; i++) {
             suffixArray[i] = i; // Please note that each suffix is expressed by one integer.      
         }
-        //                                            
         // ここに、int suffixArrayをソートするコードを書け。
         // もし、mySpace が"ABC"ならば、
         // suffixArray = { 0, 1, 2} となること求められる。
@@ -133,6 +132,15 @@ public class Frequencer implements FrequencerInterface{
         //   suffixArray[ 1]= 1:BA
         //   suffixArray[ 2]= 0:CBA
         // のようになるべきである。
+        for (int i = 0; i < mySpace.length-1; i++){
+            for (int j = 0; j < mySpace.length-i-1; j++){
+                if (suffixCompare(suffixArray[j], suffixArray[j+1]) > 0){
+                    int temp = suffixArray[j+1];
+                    suffixArray[j+1] = suffixArray[j];
+                    suffixArray[j] = temp;
+                }
+            }
+        }
     }
 
     // ここから始まり、指定する範囲までは変更してはならないコードである。
