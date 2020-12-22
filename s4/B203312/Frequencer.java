@@ -217,7 +217,21 @@ public class Frequencer implements FrequencerInterface{
         //
         // ここに比較のコードを書け 
         //
-        return 0; // この行は変更しなければならない。
+        int result = 0;
+        for(int number=0; number < k-j; number++){
+            if(i+number >= mySpace.length){
+                result = -1;
+                break;
+            }else if(mySpace[i+number] != myTarget[j+number]){
+                    if(mySpace[i+number] > myTarget[j+number])
+                        result = 1;
+                    if(mySpace[i+number] < myTarget[j+number])
+                        result = -1;
+                    break;
+            }
+        }
+
+        return result; // この行は変更しなければならない。
     }
 
 
@@ -250,8 +264,10 @@ public class Frequencer implements FrequencerInterface{
         // if target_start_end is "Ho ", it will return 6.                
         //                                                                          
         // ここにコードを記述せよ。                                                 
-        //                                                                         
-        return suffixArray.length; //このコードは変更しなければならない。          
+        for(int i = 0; i < suffixArray.length; i++){
+            if (targetCompare(suffixArray[i], start, end) == 0) return i;
+        }
+        return suffixArray.length;
     }
 
     private int subByteEndIndex(int start, int end) {
@@ -282,8 +298,10 @@ public class Frequencer implements FrequencerInterface{
         // if target_start_end is"i", it will return 9 for "Hi Ho Hi Ho".    
         //                                                                   
         //　ここにコードを記述せよ                                           
-        //                                                                   
-        return suffixArray.length; // この行は変更しなければならない、       
+        for (int i = 0; i < suffixArray.length; i++){
+            if ( targetCompare(suffixArray[suffixArray.length-i-1], start, end) == 0) return suffixArray.length-i;
+        }
+        return 0;
     }
 
 
@@ -302,22 +320,16 @@ public class Frequencer implements FrequencerInterface{
         try { // テストに使うのに推奨するmySpaceの文字は、"ABC", "CBA", "HHH", "Hi Ho Hi Ho".
             frequencerObject = new Frequencer();
             frequencerObject.setSpace("ABC".getBytes());
-            System.out.println(frequencerObject.suffixCompare(0, 0));
-            System.out.println(frequencerObject.suffixCompare(0, 1));
-            System.out.println(frequencerObject.suffixCompare(1, 0));
-            
             frequencerObject.printSuffixArray();
+
             frequencerObject = new Frequencer();
             frequencerObject.setSpace("CBA".getBytes());
             frequencerObject.printSuffixArray();
+
             frequencerObject = new Frequencer();
-
             frequencerObject.setSpace("HHH".getBytes());
-            System.out.println(frequencerObject.suffixCompare(1, 1));
-            System.out.println(frequencerObject.suffixCompare(0, 1));
-            System.out.println(frequencerObject.suffixCompare(1, 0));
-
             frequencerObject.printSuffixArray();
+
             frequencerObject = new Frequencer();
             frequencerObject.setSpace("Hi Ho Hi Ho".getBytes());
             frequencerObject.printSuffixArray();
@@ -335,10 +347,20 @@ public class Frequencer implements FrequencerInterface{
               10:o Hi Ho                     
             */
 
-            frequencerObject.setTarget("H".getBytes());
+            frequencerObject.setTarget("Hi".getBytes());
+            System.out.println("test1"+frequencerObject.targetCompare(3, 0, 1));
+            System.out.println("test2"+frequencerObject.targetCompare(3, 0, 2));
             //                                         
             // ****  Please write code to check subByteStartIndex, and subByteEndIndex
-            //
+            frequencerObject.setTarget("Ho Ho Ho Ho".getBytes());
+            System.out.println("Start");
+            System.out.println("test3:"+frequencerObject.subByteStartIndex(0,2));
+            System.out.println("test4:"+frequencerObject.subByteStartIndex(0,3));
+
+            frequencerObject.setTarget("High_and_Low".getBytes());
+            System.out.println("End");
+            System.out.println("test5:"+frequencerObject.subByteEndIndex(0,2));
+            System.out.println("test6:"+frequencerObject.subByteEndIndex(1,2));
 
             int result = frequencerObject.frequency();
             System.out.print("Freq = "+ result+" ");
