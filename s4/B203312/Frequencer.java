@@ -63,48 +63,13 @@ public class Frequencer implements FrequencerInterface{
 		// "i"      <  "o"        : compare by code                              
 		// "Hi"     <  "Ho"       ; if head is same, compare the next element    
 		// "Ho"     <  "Ho "      ; if the prefix is identical, longer string is big  
-		//  
+		//
 		//The return value of "int suffixCompare" is as follows. 
 		// if suffix_i > suffix_j, it returns 1
 		// if suffix_i < suffix_j, it returns -1
 		// if suffix_i = suffix_j, it returns 0;
 
 		// ここにコードを記述せよ 
-		// int result = 0;
-		// byte[] suffix_i = new byte[mySpace.length-i];
-		// byte[] suffix_j = new byte[mySpace.length-j];
-
-		// for(int k=0; k < mySpace.length-i; k++){
-		//     suffix_i[k] = mySpace[i+k];
-		// }
-		// for(int k=0; k < mySpace.length-j; k++){
-		//     suffix_j[k] = mySpace[j+k];
-		// }
-		
-		// for(int k=0; ; k++){
-		//     if(k < suffix_i.length && k < suffix_j.length){
-		//         if(suffix_i[k] != suffix_j[k]){
-		//             if(suffix_i[k] > suffix_j[k]){
-		//                 result = 1;
-		//                 break;
-		//             }else{
-		//                 result = -1;
-		//                 break;
-		//             }
-		//         }
-		//     }else if(k == suffix_i.length && k < suffix_j.length){
-		//         result = -1;
-		//         break;
-		//     }else if(k < suffix_i.length && k == suffix_j.length){
-		//         result = 1;
-		//         break;
-		//     }else{
-		//         result = 0;
-		//         break;
-		//     }
-		// }
-
-		// return result; // この行は変更しなければいけない。 
 
 		if (i==j) return 0;
 
@@ -146,16 +111,6 @@ public class Frequencer implements FrequencerInterface{
 		//   suffixArray[ 2]= 0:CBA
 		// のようになるべきである。
 
-		// for (int i = 0; i < mySpace.length-1; i++){
-		//     for (int j = 0; j < mySpace.length-i-1; j++){
-		//         if (suffixCompare(suffixArray[j], suffixArray[j+1]) > 0){
-		//             int temp = suffixArray[j+1];
-		//             suffixArray[j+1] = suffixArray[j];
-		//             suffixArray[j] = temp;
-		//         }
-		//     }
-		// }
-
 		// ソートの方法を取り換える
 		// ヒープ木の構築
 		ArrayList<Integer> heapTree = new ArrayList<Integer>();
@@ -176,17 +131,27 @@ public class Frequencer implements FrequencerInterface{
 
 		int n = 0;
 		while(heapTree.size() != 0){
+			for (int i = 0; i < heapTree.size(); i++) System.out.print(" "+heapTree.get(i));
+			System.out.println(" n="+n);
 			suffixArray[n] = heapTree.get(0);
 			n++;
 			int idx=0;
-			while (2*idx+2<heapTree.size()){
-				if (suffixCompare(heapTree.get(2*idx+1),heapTree.get(2*idx+2)) > 0){
-					heapTree.set(idx, heapTree.get(2*idx+2));
-					idx = 2*idx+2;
-				}
-				else{
+			while(true){
+				if (2*idx+2 > heapTree.size()) break;
+
+				if (2*idx+2 == heapTree.size()){
 					heapTree.set(idx, heapTree.get(2*idx+1));
 					idx = 2*idx+1;
+				}
+				else {
+					if (suffixCompare(heapTree.get(2*idx+1),heapTree.get(2*idx+2)) > 0){
+						heapTree.set(idx, heapTree.get(2*idx+2));
+						idx = 2*idx+2;
+					}
+					else{
+						heapTree.set(idx, heapTree.get(2*idx+1));
+						idx = 2*idx+1;
+					}
 				}
 			}
 			heapTree.remove(idx);
@@ -266,7 +231,6 @@ public class Frequencer implements FrequencerInterface{
 		//            suffixCompare should return -1.
 		//
 		// ここに比較のコードを書け 
-		//
 
 		for (int n = 0; n < k-j; n++){
 			if (i+n >= mySpace.length) return -1;
@@ -277,7 +241,6 @@ public class Frequencer implements FrequencerInterface{
 
 		return 0; // この行は変更しなければならない。
 	}
-
 
 	private int subByteStartIndex(int start, int end) {
 		//suffix arrayのなかで、目的の文字列の出現が始まる位置を求めるメソッド
@@ -299,7 +262,7 @@ public class Frequencer implements FrequencerInterface{
 
 		// It returns the index of the first suffix 
 		// which is equal or greater than target_start_end.                         
-	// Suppose target is set "Ho Ho Ho Ho"
+		// Suppose target is set "Ho Ho Ho Ho"
 		// if start = 0, and end = 2, target_start_end is "Ho".
 		// if start = 0, and end = 3, target_start_end is "Ho ".
 		// Assuming the suffix array is created from "Hi Ho Hi Ho",                 
@@ -369,7 +332,6 @@ public class Frequencer implements FrequencerInterface{
 		return left;
 	}
 
-
 	// Suffix Arrayを使ったプログラムのホワイトテストは、
 	// privateなメソッドとフィールドをアクセスすることが必要なので、
 	// クラスに属するstatic mainに書く方法もある。
@@ -396,8 +358,6 @@ public class Frequencer implements FrequencerInterface{
 			frequencerObject.printSuffixArray();
 			*/
 
-			frequencerObject = new Frequencer();
-			frequencerObject.setSpace("Hi Ho Hi Ho".getBytes());
 			// frequencerObject.printSuffixArray();
 			/* Example from "Hi Ho Hi Ho"    
 			   0: Hi Ho                      
@@ -417,21 +377,16 @@ public class Frequencer implements FrequencerInterface{
 			// System.out.println("test1"+frequencerObject.targetCompare(3, 0, 1));
 			//                                         
 			// ****  Please write code to check subByteStartIndex, and subByteEndIndex
-			frequencerObject.setTarget("p".getBytes());
-			System.out.println(frequencerObject.frequency());
-			/*System.out.println("Start");
-			System.out.println("test3:"+frequencerObject.subByteStartIndex(0,2));
-			System.out.println("test4:"+frequencerObject.subByteEndIndex(0,3));
-			/*
-			frequencerObject.setTarget("High_and_Low".getBytes());
-			System.out.println("End");
-			System.out.println("test5:"+frequencerObject.subByteEndIndex(0,2));
-			System.out.println("test6:"+frequencerObject.subByteEndIndex(1,2));
 
-			int result = frequencerObject.frequency();
-			System.out.print("Freq = "+ result+" ");
-			if(4 == result) { System.out.println("OK"); } else {System.out.println("WRONG"); }
-			*/
+			frequencerObject = new Frequencer();
+			frequencerObject.setSpace("High and Low".getBytes());
+			frequencerObject.setTarget("Hi".getBytes());
+			frequencerObject.printSuffixArray();
+			int start = 0;
+			int end = 2;
+			System.out.println(frequencerObject.subByteStartIndex(start, end));
+			System.out.println(frequencerObject.subByteEndIndex(start, end));
+			System.out.println(frequencerObject.subByteFrequency(start, end));
 		}
 		catch(Exception e) {
 			System.out.println("STOP");
