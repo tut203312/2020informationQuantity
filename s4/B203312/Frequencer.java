@@ -139,26 +139,44 @@ public class Frequencer implements FrequencerInterface{
 		while(heapTree.size() != 0){
 			suffixArray[n] = heapTree.get(0);
 			n++;
+			heapTree.set(0,heapTree.get(heapTree.size()-1));
 			int idx=0;
 			while(true){
+				// 現在のノードが葉だったら終了
 				if (2*idx+2 > heapTree.size()) break;
 
+				//左の子ノードしかなかったら左の子ノードと比較する
 				if (2*idx+2 == heapTree.size()){
-					heapTree.set(idx, heapTree.get(2*idx+1));
-					idx = 2*idx+1;
+					if (suffixCompare(heapTree.get(idx), heapTree.get(2*idx+1)) > 0){
+						int tmp = heapTree.get(idx);
+						heapTree.set(idx, heapTree.get(2*idx+1));
+						heapTree.set(2*idx+1, tmp);
+						idx = 2*idx+1;
+					}
+					else break;
 				}
 				else {
 					if (suffixCompare(heapTree.get(2*idx+1),heapTree.get(2*idx+2)) > 0){
-						heapTree.set(idx, heapTree.get(2*idx+2));
-						idx = 2*idx+2;
+						if (suffixCompare(heapTree.get(idx), heapTree.get(2*idx+2)) > 0){
+							int tmp = heapTree.get(idx);
+							heapTree.set(idx, heapTree.get(2*idx+2));
+							heapTree.set(2*idx+2, tmp);
+							idx = 2*idx+2;
+						}
+						else break;
 					}
 					else{
-						heapTree.set(idx, heapTree.get(2*idx+1));
-						idx = 2*idx+1;
+						if (suffixCompare(heapTree.get(idx), heapTree.get(2*idx+1)) > 0){
+							int tmp = heapTree.get(idx);
+							heapTree.set(idx, heapTree.get(2*idx+1));
+							heapTree.set(2*idx+1, tmp);
+							idx = 2*idx+1;
+						}
+						else break;
 					}
 				}
 			}
-			heapTree.remove(idx);
+			heapTree.remove(heapTree.size()-1);
 		}
 	}
 
@@ -385,14 +403,14 @@ public class Frequencer implements FrequencerInterface{
 			// ****  Please write code to check subByteStartIndex, and subByteEndIndex
 
 			frequencerObject = new Frequencer();
-			frequencerObject.setSpace("Hi Ho Hi Ho".getBytes());
-			frequencerObject.setTarget(" ".getBytes());
+			frequencerObject.setSpace("HHHHHHHHHHHHHHHHHHHHHHHHH".getBytes());
+			frequencerObject.setTarget("".getBytes());
 			frequencerObject.printSuffixArray();
-			int start = 0;
-			int end = 1;
-			System.out.println(frequencerObject.subByteStartIndex(start, end));
-			System.out.println(frequencerObject.subByteEndIndex(start, end));
-			System.out.println(frequencerObject.subByteFrequency(start, end));
+			// int start = 0;
+			// int end = 1;
+			// System.out.println(frequencerObject.subByteStartIndex(start, end));
+			// System.out.println(frequencerObject.subByteEndIndex(start, end));
+			// System.out.println(frequencerObject.subByteFrequency(start, end));
 		}
 		catch(Exception e) {
 			System.out.println("STOP");
